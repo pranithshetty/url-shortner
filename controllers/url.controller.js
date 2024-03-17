@@ -5,7 +5,7 @@ async function handleGenerateShortURL(req, res) {
 	//logic
 	const shortId = nanoid(8);
 	const body = req.body;
-	console.log(body);
+	//console.log(body);
 	if (!body.url) return res.status(400).json({ error: "URL is required" });
 
 	await URL.create({
@@ -13,7 +13,8 @@ async function handleGenerateShortURL(req, res) {
 		redirectUrl: body.url,
 		visitHistory: [],
 	});
-	return res.json({ status: "Success", shortId: shortId });
+	//return res.json({ status: "Success", shortId: shortId });
+	return res.render("home", { shortId: shortId });
 }
 
 async function handleGetAnalytics(req, res) {
