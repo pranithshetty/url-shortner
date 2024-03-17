@@ -13,3 +13,4 @@ A url shortner application built with node.js
 - express
 - mongoose
 - nanoid ("npm i nanoid@3" v3 only if you are using module imports)
+- ejs (3.1.9) (templating engine for SSR)
