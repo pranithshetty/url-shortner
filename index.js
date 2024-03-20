@@ -7,21 +7,24 @@ const connectMongoDb = require("./connection");
 const { URL } = require("./model/url.model");
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const { restrictToLoginUserOnly } = require("./middlewares/auth.middleware");
+const {
+	restrictToLoginUserOnly,
+	checkAuth,
+} = require("./middlewares/auth.middleware");
 
 const app = express();
-const PORT = 3000;
+const PORT = 8000;
 connectMongoDb("mongodb://127.0.0.1:27017/short-url");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser);
+app.use(cookieParser());
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
-app.use("/url", urlRouter);
-app.use("/", staticRouter);
+app.use("/url", restrictToLoginUserOnly, urlRouter);
+app.use("/", checkAuth, staticRouter);
 app.use("/user", userRouter);
 
 app.get("/url/:shortId", async (req, res) => {

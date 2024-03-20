@@ -13,7 +13,7 @@
 	<body>
 		<h1>URL Shortner</h1>
 		<% if(locals.shortId) {%>
-		<p>Generated URL:http://localhost:3000/url/<%=shortId %></p>
+		<p>Generated URL:<%=host %>/<%=shortId %></p>
 		<%}%> <br />
 		<form method="POST" action="/url">
 			<label for="url">Enter URL to shorten</label><br />
