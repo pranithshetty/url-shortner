@@ -8,8 +8,8 @@ const { URL } = require("./model/url.model");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const {
-	restrictToLoginUserOnly,
-	checkAuth,
+	checkForAuthentication,
+	restrictTo,
 } = require("./middlewares/auth.middleware");
 
 const app = express();
@@ -19,12 +19,13 @@ connectMongoDb("mongodb://127.0.0.1:27017/short-url");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(checkForAuthentication);
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
-app.use("/url", restrictToLoginUserOnly, urlRouter);
-app.use("/", checkAuth, staticRouter);
+app.use("/url", restrictTo(["NORMAL", "ADMIN"]), urlRouter);
+app.use("/", staticRouter);
 app.use("/user", userRouter);
 
 app.get("/url/:shortId", async (req, res) => {
